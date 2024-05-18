@@ -10,6 +10,7 @@ import authenticate from "../middlewares/authenticate.js";
 
 const authRouter = express.Router();
 
+// Registartion
 authRouter.post(
 	"/register",
 	validateBody(userSignUpSchema),
