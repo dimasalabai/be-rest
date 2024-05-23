@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import "dotenv/config";
 
 import authRouter from "./routes/authRouter.js";
+import emailRouter from "./routes/emailRouter.js";
 const { DB_HOST, PORT = 3000 } = process.env;
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 app.use("/users", authRouter);
+app.use("/email", emailRouter);
 
 app.use((_, res) => {
 	res.status(404).json({ message: "Route not found" });
