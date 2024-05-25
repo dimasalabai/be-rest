@@ -7,6 +7,8 @@ import ctrlWrapper from "../decorators/ctrlWrapper.js";
 
 import HttpError from "../helpers/HttpError.js";
 
+import User from "../models/User.js";
+
 const { JWT_SECRET } = process.env;
 
 const signup = async (req, res) => {
@@ -77,9 +79,65 @@ const signout = async (req, res) => {
 	res.status(204).json();
 };
 
+const getFavoriteCountries = async (req, res) => {
+	const { _id } = req.user;
+	const currentUser = await authServices.findUser({ _id }).populate({
+		path: "favoriteCountries",
+		slelect: {
+			_id: 1,
+			country: 1,
+			city: 1,
+			image: 1,
+		},
+	});
+	console.log(currentUser);
+	res.json({
+		user: currentUser,
+	});
+};
+
+const addFavoriteCountry = async (req, res) => {
+	const { _id } = req.user;
+
+	const favoriteCountry = req.body;
+
+	const currentUser = await User.findById({ _id });
+
+	currentUser.favoriteCountries.push(favoriteCountry.id);
+	await currentUser.save();
+
+	res.status(201).json(currentUser);
+};
+
+const deleteFavoriteCountry = async (req, res) => {
+	const { _id } = req.user;
+
+	const favoriteCountry = req.body;
+	const { id } = favoriteCountry;
+	const currentUser = await User.findById({ _id });
+
+	const deletedCountryId = currentUser.favoriteCountries.findIndex(
+		(favoriteCountryId) => favoriteCountryId.toString() === id.toString()
+	);
+
+	if (deletedCountryId === -1) {
+		throw HttpError(404, `Country with id = ${id} not found`);
+	}
+
+	currentUser.favoriteCountries.splice(deletedCountryId, 1);
+
+	await currentUser.save();
+
+	console.log(currentUser);
+	res.status(203).json(`Country with id = ${id} deleted sucssesfull `);
+};
+
 export default {
 	signup: ctrlWrapper(signup),
 	signin: ctrlWrapper(signin),
 	getCurrent: ctrlWrapper(getCurrent),
 	signout: ctrlWrapper(signout),
+	getFavoriteCountries: ctrlWrapper(getFavoriteCountries),
+	addFavoriteCountry: ctrlWrapper(addFavoriteCountry),
+	deleteFavoriteCountry: ctrlWrapper(deleteFavoriteCountry),
 };

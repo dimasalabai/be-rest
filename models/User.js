@@ -1,4 +1,4 @@
-import { Schema, model, set } from "mongoose";
+import { Schema, model } from "mongoose";
 
 import { handleSaveError, setUpdateSettings } from "./hooks.js";
 
@@ -8,7 +8,7 @@ const userSchema = new Schema(
 	{
 		name: {
 			type: String,
-			required: [true, "Email is required"],
+			required: [true, "Name is required"],
 		},
 		email: {
 			type: String,
@@ -20,6 +20,7 @@ const userSchema = new Schema(
 			type: String,
 			required: [true, "Password is required"],
 		},
+		favoriteCountries: [{ type: Schema.Types.ObjectId, ref: "country" }],
 
 		token: {
 			type: String,
