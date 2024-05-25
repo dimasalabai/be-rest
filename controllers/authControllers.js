@@ -61,10 +61,12 @@ const signin = async (req, res) => {
 };
 
 const getCurrent = async (req, res) => {
-	const { email } = req.user;
+	const { email, name } = req.user;
+	console.log(req.user);
 
 	res.json({
 		email,
+		name,
 	});
 };
 
