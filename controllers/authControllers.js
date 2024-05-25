@@ -36,6 +36,7 @@ const signin = async (req, res) => {
 	if (!user) {
 		throw HttpError(401, "Email or password invalid");
 	}
+	console.log("user", user);
 
 	const passwordCompare = await bcrypt.compare(password, user.password);
 	if (!passwordCompare) {
@@ -54,6 +55,7 @@ const signin = async (req, res) => {
 		token,
 		user: {
 			email,
+			name: user.name,
 		},
 	});
 };
