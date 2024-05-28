@@ -83,16 +83,16 @@ const getFavoriteCountries = async (req, res) => {
 	const { _id } = req.user;
 	const currentUser = await authServices.findUser({ _id }).populate({
 		path: "favoriteCountries",
-		slelect: {
+		select: {
 			_id: 1,
 			country: 1,
 			city: 1,
 			image: 1,
 		},
 	});
-	console.log(currentUser);
+
 	res.json({
-		user: currentUser,
+		countries: currentUser.favoriteCountries,
 	});
 };
 
