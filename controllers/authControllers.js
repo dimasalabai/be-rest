@@ -128,8 +128,7 @@ const deleteFavoriteCountry = async (req, res) => {
 
 	await currentUser.save();
 
-	console.log(currentUser);
-	res.status(203).json(`Country with id = ${id} deleted sucssesfull `);
+	res.status(201).json(currentUser);
 };
 
 export default {
