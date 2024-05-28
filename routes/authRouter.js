@@ -36,7 +36,7 @@ authRouter.post(
 	authControllers.addFavoriteCountry
 );
 
-authRouter.delete(
+authRouter.post(
 	"/deleteFavorite",
 	authenticate,
 	validateBody(favoriteCountrySchema),
