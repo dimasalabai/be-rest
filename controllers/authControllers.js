@@ -103,15 +103,6 @@ const addFavoriteCountry = async (req, res) => {
 
 	const currentUser = await User.findById({ _id });
 
-	const isContainCountry = currentUser.favoriteCountries.find(
-		(id) => id.toString() === favoriteCountry.id.toString()
-	);
-	console.log(isContainCountry);
-
-	if (isContainCountry) {
-		return res.status(203).json("Already exist");
-	}
-
 	currentUser.favoriteCountries.push(favoriteCountry.id);
 	await currentUser.save();
 
